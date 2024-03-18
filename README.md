@@ -1,5 +1,6 @@
 # Application Logs
 * use docker to build and use Qgroundcontrol to flash https://www.youtube.com/watch?v=pV5IMcnSIR4
+* ./Tools/docker_run.sh 'make cubepilot_cubeorangeplus_default'
 
 # PX4 Drone Autopilot
 
