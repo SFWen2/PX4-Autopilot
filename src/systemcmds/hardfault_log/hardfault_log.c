@@ -141,6 +141,21 @@ static int genfault(int fault)
 		/* This is not going to happen */
 		break;
 
+	case 2:
+		asm("BX %0" : : "r"(0x0));
+		/* This is not going to happen */
+		break;
+
+	case 3: {
+			char buffer[128] = {0};
+			void *dest = (void *)0x0;
+
+			memcpy(dest, &buffer, 128);
+			/* This is not going to happen */
+		}
+		break;
+
+
 	default:
 		break;
 
@@ -1270,10 +1285,11 @@ static void print_usage(void)
 	PRINT_MODULE_USAGE_COMMAND_DESCR("rearm", "Drop an uncommitted hardfault");
 
 	PRINT_MODULE_USAGE_COMMAND_DESCR("fault", "Generate a hardfault (this command crashes the system :)");
-	PRINT_MODULE_USAGE_ARG("0|1", "Hardfault type: 0=divide by 0, 1=Assertion (default=0)", true);
+	PRINT_MODULE_USAGE_ARG("0|1|2|3",
+			       "Hardfault type: 0=divide by 0, 1=Assertion, 2=jump to 0x0, 3=write to 0x0 (default=0)", true);
 
 	PRINT_MODULE_USAGE_COMMAND_DESCR("commit",
-					 "Write uncommitted hardfault to /fs/microsd/fault_%i.txt (and rearm, but don't reset)");
+					 "Write uncommitted hardfault to " CONFIG_BOARD_ROOT_PATH "/fault_%i.txt (and rearm, but don't reset)");
 	PRINT_MODULE_USAGE_COMMAND_DESCR("count",
 					 "Read the reboot counter, counts the number of reboots of an uncommitted hardfault (returned as the exit code of the program)");
 	PRINT_MODULE_USAGE_COMMAND_DESCR("reset", "Reset the reboot counter");
